@@ -1,5 +1,5 @@
-import express from 'express';
-import { playersController } from '../controllers';
+import express from "express";
+import { gamesController, playersController } from "../controllers";
 
 const routerHandler = express.Router();
 
@@ -8,17 +8,32 @@ const routerHandler = express.Router();
 /* -------------------------------------------------------------------------- */
 //#region [PlayersRouter]
 
-routerHandler.post("/players", (req, res) => {
-  playersController.create(req, res);
+routerHandler.post("/players", (req, res, next) => {
+  playersController.create({ req, res, next });
 });
 
-routerHandler.get("/players/:playerId", (req, res) => {
-  playersController.findById(req, res);
-})
+routerHandler.get("/players/:playerId", (req, res, next) => {
+  playersController.findById({ req, res, next });
+});
 
-routerHandler.patch("/players/:playerId", (req, res) => {
-  playersController.update(req, res);
-})
+routerHandler.patch("/players/:playerId", (req, res, next) => {
+  playersController.update({ req, res, next });
+});
 //#endregion [PlayersRouter]
+
+/* -------------------------------------------------------------------------- */
+/*                                Games Router                                */
+/* -------------------------------------------------------------------------- */
+//#region [GamesRouter]
+
+routerHandler.post("/games", (req, res, next) => {
+  gamesController.create({ req, res, next });
+});
+
+routerHandler.get("/games/:gameId", (req, res, next) => {
+  gamesController.findById({ req, res, next });
+});
+
+//#endregion [GamesRouter]
 
 export default routerHandler;

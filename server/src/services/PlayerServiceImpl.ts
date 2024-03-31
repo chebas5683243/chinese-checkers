@@ -9,9 +9,16 @@ export interface PlayerServiceProps {
 
 export class PlayerServiceImpl implements PlayersService {
   constructor(private props: PlayerServiceProps) {}
-  
+
   async create(player: Player): Promise<Player> {
     try {
+      const playerName = player.name;
+      const imgNumber =
+        playerName[0].charCodeAt(0) +
+        playerName[playerName.length - 1].charCodeAt(0) +
+        playerName.length;
+      player.imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${imgNumber}.png`;
+
       const response = await this.props.playersRepo.create(player);
       return response;
     } catch (error) {

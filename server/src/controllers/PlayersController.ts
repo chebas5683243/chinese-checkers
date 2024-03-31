@@ -1,10 +1,11 @@
+import { RequestHandlerArgs } from ".";
 import { Player } from "../domain/Player";
 import { PlayersService } from "../services/PlayersService";
 import { BaseController, BaseControllerProps } from "./BaseController";
-import express from 'express';
+import express from "express";
 
 export interface PlayersControllerProps extends BaseControllerProps {
-  service: PlayersService
+  service: PlayersService;
 }
 
 export class PlayersController extends BaseController {
@@ -12,38 +13,38 @@ export class PlayersController extends BaseController {
     super(props);
   }
 
-  async create(req: express.Request, res: express.Response) {
+  async create(context: RequestHandlerArgs) {
     try {
-      const player = Player.instanceFor("create", req.body);
+      const player = Player.instanceFor("create", context.req.body);
       const response = await this.props.service.create(player);
-      res.status(201).json(response);
+      context.res.status(201).json(response);
     } catch (error) {
-      throw error;
+      context.next(error);
     }
   }
 
-  async findById(req: express.Request, res: express.Response) {
+  async findById(context: RequestHandlerArgs) {
     try {
       const player = Player.instanceFor("findById", {
-        id: req.params.playerId
+        id: context.req.params.playerId,
       });
       const response = await this.props.service.findById(player);
-      res.status(200).json(response);
+      context.res.status(200).json(response);
     } catch (error) {
-      throw error;
+      context.next(error);
     }
   }
 
-  async update(req: express.Request, res: express.Response) {
+  async update(context: RequestHandlerArgs) {
     try {
       const player = Player.instanceFor("update", {
-        id: req.params.playerId,
-        name: req.body.name
+        id: context.req.params.playerId,
+        name: context.req.body.name,
       });
       const response = await this.props.service.update(player);
-      res.status(200).json(response);
+      context.res.status(200).json(response);
     } catch (error) {
-      throw error;
+      context.next(error);
     }
   }
 }

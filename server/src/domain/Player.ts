@@ -20,7 +20,6 @@ export class Player {
   }
 
   static instanceFor(instanceSchema: PlayerSchema, data?: Partial<Player>) {
-
     const validation = PlayersValidator[instanceSchema].safeParse(data);
 
     if (!validation.success) {

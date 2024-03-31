@@ -1,7 +1,13 @@
-import { playersRepo } from '../repositories';
-import { PlayerServiceImpl } from './PlayerServiceImpl';
+import { gamesRepo, playersRepo } from "../repositories";
+import { GamesServicesImpl } from "./GameServiceImpl";
+import { PlayerServiceImpl } from "./PlayerServiceImpl";
 
-export const playerService = new PlayerServiceImpl({
+export const playersService = new PlayerServiceImpl({
   playersRepo,
-  config: {}
+  config: {},
+});
+
+export const gamesService = new GamesServicesImpl({
+  gamesRepo,
+  config: {},
 });
