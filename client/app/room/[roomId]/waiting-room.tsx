@@ -1,8 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Game } from "@/types/Game";
+import { Player } from "@/types/Player";
 import Image from "next/image";
 
-export default function Room() {
+interface WaitingRoomProps {
+  room: Game;
+}
+
+export function WaitingRoom({ room }: WaitingRoomProps) {
   return (
     <div className="flex flex-col gap-10 items-center justify-center min-h-screen text-primary p-4">
       <div className="flex flex-col gap-10 max-w-[500px]">
@@ -10,9 +18,9 @@ export default function Room() {
           Waiting for player(s) to join...
         </h1>
         <div className="flex items-center justify-between">
-          <PlayerView status="ready" nickname="Sebastian" />
+          <PlayerView player={room.owner} status="ready" />
           <div className="h-1 bg-primary w-4" />
-          <PlayerView status="connecting" />
+          <PlayerView player={room.guest} status="ready" />
         </div>
       </div>
       <div className="flex flex-col gap-2 justify-center items-center">
@@ -26,7 +34,7 @@ export default function Room() {
 }
 
 interface PlayerViewConnectedProps {
-  nickname: string;
+  player?: Player;
   status: "connected" | "ready";
 }
 
@@ -37,7 +45,7 @@ interface PlayerViewConnectingProps {
 type PlayerViewProps = PlayerViewConnectedProps | PlayerViewConnectingProps;
 
 function PlayerView(props: PlayerViewProps) {
-  if (props.status === "connecting") {
+  if (props.status === "connecting" || !props.player) {
     return (
       <div className="flex flex-col justify-center items-center gap-4">
         <Skeleton className="w-20 h-20 rounded-full" />
@@ -46,24 +54,19 @@ function PlayerView(props: PlayerViewProps) {
     );
   }
 
-  const { nickname, status } = props;
-
-  const imgNumber =
-    nickname[0].charCodeAt(0) +
-    nickname[nickname.length - 1].charCodeAt(0) +
-    nickname.length;
+  const { player, status } = props;
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
       <Image
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${imgNumber}.png`}
+        src={player.imageUrl}
         alt="avatar"
         className="rounded-full bg-primary/20"
         width={80}
         height={80}
       />
       <span className="text-lg text-primary">
-        {nickname} {status === "ready" ? "✅" : "🕒"}
+        {player.name} {status === "ready" ? "✅" : "🕒"}
       </span>
     </div>
   );
