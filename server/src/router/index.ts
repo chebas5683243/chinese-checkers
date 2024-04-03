@@ -34,6 +34,10 @@ routerHandler.get("/games/:gameId", (req, res, next) => {
   gamesController.findById({ req, res, next });
 });
 
+routerHandler.patch("/games/:gameId", (req, res, next) => {
+  gamesController.update({ req, res, next });
+});
+
 //#endregion [GamesRouter]
 
 export default routerHandler;

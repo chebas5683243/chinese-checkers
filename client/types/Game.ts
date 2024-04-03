@@ -12,6 +12,6 @@ export interface Game {
   status: GameStatus;
   ownerId: string;
   owner: Player;
-  guestId?: string;
+  guestId?: string | null;
   guest?: Player;
 }

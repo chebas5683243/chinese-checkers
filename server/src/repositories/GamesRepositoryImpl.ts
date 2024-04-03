@@ -6,6 +6,15 @@ export class GamesRepositoryImpl implements GamesRepository {
   async create(game: Game): Promise<Game> {
     try {
       const response = await db.game.create({
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+            },
+          },
+        },
         data: {
           ownerId: game.ownerId,
         },
@@ -51,15 +60,31 @@ export class GamesRepositoryImpl implements GamesRepository {
     throw error || new Error("Unknown error");
   }
 
-  async updateStatus(game: Game): Promise<Game> {
+  async update(game: Game): Promise<Game> {
     let error;
     try {
       const response = await db.game.update({
+        include: {
+          guest: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+            },
+          },
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+            },
+          },
+        },
         where: {
           id: game.id,
         },
         data: {
-          status: game.status,
+          ...game,
         },
       });
 

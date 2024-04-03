@@ -20,7 +20,7 @@ export function createOrUpdatePlayer(args: CreateOrUpdatePlayerArgs) {
   return createPlayer(player);
 }
 
-async function createPlayer(player: Partial<Player>) {
+export async function createPlayer(player: Partial<Player>) {
   const response = await axiosInstance.post<Player>("/players", player);
   return response.data;
 }

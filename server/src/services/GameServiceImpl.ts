@@ -28,7 +28,12 @@ export class GamesServicesImpl implements GamesService {
     }
   }
 
-  async updateStatus(game: Game): Promise<Game> {
-    throw new Error("Method not implemented.");
+  async update(game: Game): Promise<Game> {
+    try {
+      const response = await this.props.gamesRepo.update(game);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 }

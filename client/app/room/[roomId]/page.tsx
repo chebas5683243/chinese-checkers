@@ -1,12 +1,12 @@
 "use client";
 
 import { getGame } from "@/api/game";
+import { WaitingRoom } from "@/components/game/waiting-room";
 import { socket } from "@/components/providers/socket-provider";
 import { GameStatus } from "@/types/Game";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { WaitingRoom } from "./waiting-room";
 
 export default function Room() {
   const { roomId } = useParams();
@@ -18,13 +18,14 @@ export default function Room() {
   } = useQuery({
     queryKey: ["room", roomId],
     queryFn: () => getGame(roomId as string),
+    refetchInterval: 10 * 1000,
   });
 
   useEffect(() => {
-    socket.emit("join:room", roomId);
+    socket.emit("game:room:join", roomId);
 
     return () => {
-      socket.emit("leave:room", roomId);
+      socket.emit("game:room:leave", roomId);
     };
   }, [roomId]);
 

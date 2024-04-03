@@ -5,11 +5,12 @@ import { CreateOrUpdatePlayerArgs, createOrUpdatePlayer } from "@/api/player";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useObserveQuery } from "@/hooks/use-observable-query";
 import { cn } from "@/lib/utils/cn";
 import { Game } from "@/types/Game";
 import { Player } from "@/types/Player";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -23,10 +24,7 @@ export default function Home() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: player } = useQuery<Player>({
-    queryKey: ["player"],
-    enabled: false,
-  });
+  const { data: player } = useObserveQuery<Player>(["player"]);
 
   const updateOrCreatePlayerMutation = useMutation({
     mutationFn: (args: CreateOrUpdatePlayerArgs) => createOrUpdatePlayer(args),
@@ -42,7 +40,7 @@ export default function Home() {
         ownerId: player?.id,
       }),
     onSuccess: (game: Game) => {
-      queryClient.setQueryData(["game", game], player);
+      queryClient.setQueryData(["game", game.id], game);
     },
   });
 

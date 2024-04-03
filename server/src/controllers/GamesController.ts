@@ -33,4 +33,17 @@ export class GamesController extends BaseController {
       context.next(error);
     }
   }
+
+  async update(context: RequestHandlerArgs) {
+    try {
+      const game = Game.instanceFor("update", {
+        id: context.req.params.gameId,
+        ...context.req.body,
+      });
+      const response = await this.props.service.update(game);
+      context.res.status(200).json(response);
+    } catch (error) {
+      context.next(error);
+    }
+  }
 }

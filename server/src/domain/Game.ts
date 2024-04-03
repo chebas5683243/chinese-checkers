@@ -1,8 +1,7 @@
 import { GameStatus } from "@prisma/client";
-import { PlayersValidator } from "../validators/playersValidator";
 import { GamesValidator } from "../validators/gamesValidators";
 
-type GameSchema = "create" | "findById";
+type GameSchema = "create" | "findById" | "update";
 
 export class Game {
   id: string;
@@ -27,7 +26,7 @@ export class Game {
     const validation = GamesValidator[instanceSchema].safeParse(data);
 
     if (!validation.success) {
-      throw new Error(validation.error.errors[0].message);
+      throw new Error(JSON.stringify(validation.error.errors));
     }
 
     return new Game(validation.data);

@@ -52,6 +52,7 @@ export function AuthenticationModal() {
     await createMutation.mutateAsync({
       name,
     });
+    onClose();
   }
 
   if (!isModalOpen) {
@@ -67,11 +68,11 @@ export function AuthenticationModal() {
             Before continuing, please tell us your nickname.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form className="flex flex-1 flex-col gap-4">
-          <div
-            className="flex flex-col gap-2"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+        <form
+          className="flex flex-1 flex-col gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="flex flex-col gap-2">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"

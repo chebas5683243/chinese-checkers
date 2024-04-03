@@ -8,4 +8,15 @@ export class GamesValidator {
   static findById = z.object({
     id: z.string(),
   });
+
+  static update = z
+    .object({
+      id: z.string(),
+      guestId: z.string().nullish(),
+      status: z.string().optional(),
+    })
+    .transform((data) => ({
+      ...data,
+      guestId: data.guestId,
+    }));
 }
