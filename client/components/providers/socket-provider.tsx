@@ -16,8 +16,6 @@ export function SocketProvider() {
       console.log("disconnected");
     }
 
-    socket.connect();
-
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 

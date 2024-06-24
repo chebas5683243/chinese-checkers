@@ -19,4 +19,8 @@ export class GamesValidator {
       ...data,
       guestId: data.guestId,
     }));
+
+  static getMoves = z.object({
+    id: z.string(),
+  });
 }

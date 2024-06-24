@@ -38,6 +38,10 @@ routerHandler.patch("/games/:gameId", (req, res, next) => {
   gamesController.update({ req, res, next });
 });
 
+routerHandler.get("/games/:gameId/moves", (req, res, next) => {
+  gamesController.getMoves({ req, res, next });
+});
+
 //#endregion [GamesRouter]
 
 export default routerHandler;

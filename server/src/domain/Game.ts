@@ -1,7 +1,7 @@
 import { GameStatus } from "@prisma/client";
 import { GamesValidator } from "../validators/gamesValidators";
 
-type GameSchema = "create" | "findById" | "update";
+type GameSchema = "create" | "findById" | "update" | "getMoves";
 
 export class Game {
   id: string;

@@ -35,10 +35,7 @@ export default function Home() {
   });
 
   const createGameMutation = useMutation({
-    mutationFn: () =>
-      createGame({
-        ownerId: player?.id,
-      }),
+    mutationFn: (ownerId: string) => createGame({ ownerId }),
     onSuccess: (game: Game) => {
       queryClient.setQueryData(["game", game.id], game);
     },
@@ -66,15 +63,17 @@ export default function Home() {
   async function savePlayerName() {
     const name = watch("name");
 
-    if (!isDirty) return;
+    if (!isDirty) return player?.id;
 
     const update = player ? "update" : "create";
 
-    await updateOrCreatePlayerMutation.mutateAsync({
+    const { id: playerId } = await updateOrCreatePlayerMutation.mutateAsync({
       id: player?.id,
       name,
       mode: update,
     });
+
+    return playerId;
   }
 
   async function handleNewGame(e: SyntheticEvent) {
@@ -83,9 +82,9 @@ export default function Home() {
     const isValid = await trigger();
     if (!isValid) return;
 
-    await savePlayerName();
+    const ownerId = await savePlayerName();
 
-    const newGame = await createGameMutation.mutateAsync();
+    const newGame = await createGameMutation.mutateAsync(ownerId!);
     router.push(`/room/${newGame.id}`);
   }
 

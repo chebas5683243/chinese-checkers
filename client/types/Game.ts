@@ -7,6 +7,12 @@ export enum GameStatus {
   CLOSED = "CLOSED",
 }
 
+export enum GameMode {
+  STANDARD = "STANDARD",
+  CLASH = "CLASH",
+  HORDE = "HORDE",
+}
+
 export interface Game {
   id: string;
   status: GameStatus;
@@ -14,4 +20,6 @@ export interface Game {
   owner: Player;
   guestId?: string | null;
   guest?: Player;
+  mode?: GameMode;
+  nPlayers?: number;
 }

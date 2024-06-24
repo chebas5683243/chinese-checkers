@@ -16,8 +16,6 @@ model Player {
   gamesOwned Game[] @relation("Owner")
   gamesGuest Game[] @relation("Guest")
 
-  moves Move[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -52,19 +50,14 @@ model Game {
 model Move {
   id String @id @default(uuid())
 
-  order Int
-  from  Int
-  to    Int
+  from Int
+  to   Int
 
   gameId String
   game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
-  playerId String
-  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([gameId, order])
-  @@index([playerId])
+  @@index([gameId])
 }

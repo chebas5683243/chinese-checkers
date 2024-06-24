@@ -1,5 +1,6 @@
 import { db } from "../db/instance";
 import { Game } from "../domain/Game";
+import { Move } from "../domain/Move";
 import { GamesRepository } from "./GamesRepository";
 
 export class GamesRepositoryImpl implements GamesRepository {
@@ -95,5 +96,40 @@ export class GamesRepositoryImpl implements GamesRepository {
       throw new Error("Unknown error");
     }
     throw error || new Error("Unknown error");
+  }
+
+  async getMoves(gameId: string): Promise<Pick<Move, "from" | "to">[]> {
+    try {
+      const response = await db.move.findMany({
+        select: {
+          from: true,
+          to: true,
+        },
+        where: {
+          gameId,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching moves");
+    }
+  }
+
+  async saveMove(move: Move): Promise<Move> {
+    try {
+      const response = await db.move.create({
+        data: {
+          from: move.from,
+          to: move.to,
+          gameId: move.gameId,
+        },
+      });
+      return response;
+    } catch (error) {
+      throw new Error("Error saving move");
+    }
   }
 }

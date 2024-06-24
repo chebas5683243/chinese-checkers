@@ -1,12 +1,13 @@
 "use client";
 
 import { getGame } from "@/api/game";
-import { WaitingRoom } from "@/components/game/waiting-room";
+import { WaitingRoom } from "@/components/rooms/waiting-room";
 import { socket } from "@/components/providers/socket-provider";
 import { GameStatus } from "@/types/Game";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import { GameRoom } from "@/components/rooms/game-room";
 
 export default function Room() {
   const { roomId } = useParams();
@@ -41,9 +42,5 @@ export default function Room() {
     return <WaitingRoom room={room} />;
   }
 
-  return (
-    <div className="flex flex-col gap-10 items-center justify-center min-h-screen text-primary p-4">
-      Game
-    </div>
-  );
+  return <GameRoom room={room} />;
 }

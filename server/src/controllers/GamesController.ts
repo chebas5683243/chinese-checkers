@@ -1,5 +1,6 @@
 import { RequestHandlerArgs } from ".";
 import { Game } from "../domain/Game";
+import { Move } from "../domain/Move";
 import { GamesService } from "../services/GameService";
 import { BaseController, BaseControllerProps } from "./BaseController";
 
@@ -41,6 +42,18 @@ export class GamesController extends BaseController {
         ...context.req.body,
       });
       const response = await this.props.service.update(game);
+      context.res.status(200).json(response);
+    } catch (error) {
+      context.next(error);
+    }
+  }
+
+  async getMoves(context: RequestHandlerArgs) {
+    try {
+      const game = Game.instanceFor("getMoves", {
+        id: context.req.params.gameId,
+      });
+      const response = await this.props.service.getMoves(game);
       context.res.status(200).json(response);
     } catch (error) {
       context.next(error);
